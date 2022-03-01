@@ -1,5 +1,4 @@
 import React, { useState, ChangeEvent} from "react";
-import { act } from "react-dom/test-utils";
 import { Form, Segment, Button} from "semantic-ui-react";
 import { Activity } from "../../../app/models/activity";
 
@@ -41,7 +40,7 @@ export default function ActivityForm({activity: selectedActivity, closeForm, cre
                 name='description' onChange={handleInputChange} />
                 <Form.Input placeholder='Category' value={activity.category} 
                 name='category' onChange={handleInputChange}/>
-                <Form.Input placeholder='Date' value={activity.date} 
+                <Form.Input type='date' placeholder='Date' value={activity.date} 
                 name='date' onChange={handleInputChange}/>
                 <Form.Input placeholder='City' value={activity.city} 
                 name='city' onChange={handleInputChange}/>

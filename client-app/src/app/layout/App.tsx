@@ -1,21 +1,29 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import axios from 'axios';
-import { Container, Header, List } from 'semantic-ui-react';
+import { Container,} from 'semantic-ui-react';
 import { Activity } from '../models/activity';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
 import  NavBar  from './NavBar';
 import {v4 as uuid} from 'uuid';
+import agent from '../api/agent';
+import LoadingComponent from '../layout/loadingComponents'
+
 
 function App() {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedActivity, setSelectedActivity] = useState<Activity 
   | undefined>(undefined); // Initial state undefined
   const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
-    axios.get<Activity[]>('https://localhost:5001/api/activities').then(response => {
-      setActivities(response.data);
+    agent.Activities.list().then(response => {
+      // let activities: Activity[] = [];
+      response.forEach(activity => {
+        activity.date = activity.date.split('T')[0]
+      })
+      setActivities(response);
+      setLoading(false);
     })
   }, [])
 
@@ -47,6 +55,8 @@ function App() {
     setActivities([...activities.filter(x => x.id !== id)])
   }
   
+if (loading) return <LoadingComponent content='Loading app'/>
+
   return (
     <Fragment >
       <NavBar openForm={handleFormOpen}/>
